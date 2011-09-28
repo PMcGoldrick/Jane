@@ -1,3 +1,7 @@
+"""
+Run me using twistd:
+$twistd -n --python server.py
+"""
 from twisted.internet import ssl
 from twisted.application import service, internet
 from janecore.ircbot.factory import JaneIRCClientFactory
