@@ -2,7 +2,7 @@
 JANE
 ======
 -------------------------------------------------------------
-A multi-featured, sem-distributed IRC Bot (yes, another one)
+A multi-featured, semi-distributed IRC Bot (yes, another one)
 -------------------------------------------------------------
 
 Introduction
