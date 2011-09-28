@@ -1,9 +1,9 @@
 ======
-|JANE|
+JANE
 ======
--------------
+-------------------------------------------------------------
 A multi-featured, sem-distributed IRC Bot (yes, another one)
-------------
+-------------------------------------------------------------
 
 
 Jane is yet another IRC bot written in python and Twisted. She is
@@ -20,8 +20,9 @@ Features
 
 
 TODO 
-===
+====
 - Enable load,unload,reload of local plugins
 - Enable authentication for remote plugins
 - HTTP interface to many IRC functionalities
 - Tests, documentation, and clean up
+
