@@ -49,7 +49,9 @@ can be many Protocol instances. A crude diagram of a server would look something
 
 With that in mind, Jane is made up of multiple factories. 
 .. Note::
+
     Most factories will have a class variable called protocol which will be a reference to the protocol type that this factory uses to manage it's connections.
+
 
 - ``janecore.ircbot.factory.JaneIRCClient``
 
