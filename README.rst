@@ -20,10 +20,12 @@ Features
 - Support for most IRC commands
 - A simple 'local' plugin system
 - A simple 'remote' plugin system (Ansible)
-
+- SSL
 
 TODO 
 ++++
+- Make SSL for both the IRCClient and Ansible optional
+- Pick and implement a new binary serializer or at least use cpickle
 - Enable load,unload,reload of local plugins
 - Enable authentication for remote plugins
 - HTTP interface to many IRC functionalities
