@@ -1,0 +1,6 @@
+openssl req -x509 -days 365 -newkey rsa:1024 -keyout ./key.pem -out ./cert.pem
+# add password when prompted
+# run this to remove the password you will need to enter it again when promted
+mv key.pem key.pem.org
+openssl rsa -in key.pem.org -out key.pem
+

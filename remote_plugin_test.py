@@ -1,4 +1,5 @@
 from twisted.internet.protocol import ClientFactory
+from twisted.internet import ssl
 from twisted.internet import reactor
 from twisted.python import log
 
@@ -17,5 +18,5 @@ class AnsibleClientFactory(ClientFactory):
     protocol = DittoRemote
     
 factory = AnsibleClientFactory()
-reactor.connectTCP("localhost", 1677, factory)
+reactor.connectSSL("localhost", 1677, factory, ssl.ClientContextFactory())
 reactor.run()

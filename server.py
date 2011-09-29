@@ -13,10 +13,11 @@ from janecore.ircbot.ansible.factory import AnsibleFactory
 name = ""
 password = ""
 irc_host = ""
-irc_port = 0
+irc_port = 
 default_channel = ""
-ansible_port = 0
-
+ansible_port = 
+sslkey = ""
+sslcert= ""
 
 
 
@@ -36,5 +37,6 @@ parent_service.setServiceParent(application)
 #ansible_service = AnsibileService()
 #ansible_service = setServiceParent(parent_service)
 ansible_factory = AnsibleFactory()
-ansible_service = internet.TCPServer(ansible_port, ansible_factory)
+ctx = ssl.DefaultOpenSSLContextFactory(sslkey, sslcert)
+ansible_service = internet.SSLServer(ansible_port, ansible_factory, ctx)
 ansible_service.setServiceParent(parent_service)
