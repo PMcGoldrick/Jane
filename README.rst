@@ -48,22 +48,23 @@ can be many Protocol instances. A crude diagram of a server would look something
 
 
 With that in mind, Jane is made up of multiple factories. 
+.. Note::
+    Most factories will have a class variable called protocol which will be a reference to the protocol type that this factory uses to manage it's connections.
 
-
-- jancore.ircbot.factory.JaneIRCClient
+- ``janecore.ircbot.factory.JaneIRCClient``
 
   This factory is responsible for creating and maintaining connections
   to IRC servers. Since it's a sort-of parent object for the protocols
   it's also use to maintain references to shared resources, specifically
   the aptly name "storage" object which holds the all important evt_mgr. 
 
-- janecore.ircbot.ansible.AnsibleFactory
+- ``janecore.ircbot.ansible.AnsibleFactory``
 
   This factory is responsible for creating and maintaining an open port to which
   AnsibleClients can connect. AnsibleClients are the remote plugin applications which 
   are used to extend Jane's functionality. 
 
-- janecore.web.HTTPServerFactory (Coming Soon!)
+- ``janecore.web.HTTPServerFactory (Coming Soon!)``
 
   This Factory will be responsible for Accepting and maintaining HTTP requests from web
   browsers and other applications which speak HTTP. 
