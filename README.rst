@@ -37,7 +37,7 @@ Factories and Protocols
 +++++++++++++++++++++++
 
 A basic understanding of Twisted's architecture is beneficial. Basically a 'server' or 'client' is represented by a Factory. A connection to or from this server or client is
-called a Protocol. There is generally only a single instance of a Factory, while there
+called a Protocol, and is where the bulk of our logic is located (generally triggered by a ``dataReceived`` or similar event). There is generally only a single instance of a Factory, while there
 can be many Protocol instances. A crude diagram of a server would look something liket he following.
 
 ::
