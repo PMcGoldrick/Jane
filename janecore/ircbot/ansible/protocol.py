@@ -28,23 +28,34 @@ class AnsibleProtocol(amp.AMP):
                 self.transport.loseConnection)
         amp.AMP.connectionMade(self)
     
+    def connectionLost(self, reason):
+        """ Called when a connection is lost """
+        log.msg("Connection Lost: %s" % reason)
+        self.factory.evt_mgr.removeListenerByValue(self.callback)
+
     @defer.inlineCallbacks
     def callback(self, evt):
-        print "Ansible callback fired" 
+        """ 
+        Send the information with pickled data over the wire
+        """
         data = pickle.dumps(evt.data)
-        print data
-        res = yield self.callRemote(commands.EventFired,event_name=evt.__class__.EVENT, data=data)
+        res = yield self.callRemote(commands.EventFired,
+                event_name=evt.__class__.EVENT, data=data)
         print res
         defer.returnValue(evt)
 
     @commands.RegisterListener.responder
-    def register_listener(self, event_name):
-        print("register_listener called")
+    def registerListener(self, event_name):
+        """ 
+        Register a listener to an event, For Ansible protocols
+        this will always call self.callback 
+        """
         self.factory.evt_mgr.addListener(event_name, self.callback)
         return {}
 
     @commands.DispatchEvent.responder
     def dispatchEvent(self, event_name, data):
+        """ dispatch an event """
         self.factory.evt_mgr.dispatch(event_name, pickle.loads(data))
         return {}
 
@@ -65,9 +76,13 @@ class AnsibleClientProtocol(amp.AMP):
             except AttributeError:
                 print "Event callback not found, skipping: %s" % event
     
+    def connectionLost(self, reason):
+        log.msg("Connection lost: %s, I will not attempt to recover" % reason)
+        reactor.stop()
+        
     @defer.inlineCallbacks
     def registerRemote(self, eventname, callback):
-        print "trying to register %s" % eventname
+        """ Register a callback from the remote event system """
         res = yield self.callRemote(commands.RegisterListener, event_name=eventname)
         self.remote_event_registry[eventname] = callback
 
@@ -79,7 +94,6 @@ class AnsibleClientProtocol(amp.AMP):
         type.
         """
         data = pickle.loads(data)
-        print "eventfired fired with %s" % data
         if not event_name in self.remote_event_registry:
             raise ValueError("Received event that's not registered locally")
         reactor.callLater(0, self.remote_event_registry[event_name], data)  

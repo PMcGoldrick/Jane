@@ -86,15 +86,17 @@ class EventManager(object):
              log.error(ex)
 
     def removeListenerByValue(self, callback):
-            """
-            This is a helper that iterates through all events searching
-            for the value provided. Slow and sucky. 
-            """
-            for value in self.event_registry.values():
-                try:
-                    value.remove(callback)
-                except ValueError:
-                    continue
+        """
+        This is a helper that iterates through all events searching
+        for the value provided. Slow and sucky. 
+        """
+        for value in self.event_registry.values():
+            try:
+                value.remove(callback)
+            except ValueError:
+                continue
+            else:
+                return 
 
     def errBack(self, error):
         log.msg("Error handling event dispatch", error)
