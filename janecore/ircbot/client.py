@@ -19,7 +19,14 @@ class JaneIRCClient(IRCClient):
         String representing current nickname
         """
         return self.factory.nickname
-    
+    @property
+    def username(self):
+        return self.factory.username
+
+    @property
+    def realname(self):
+        return self.factory.realname
+
     @property 
     def channel(self):
         """ 
@@ -66,7 +73,8 @@ class JaneIRCClient(IRCClient):
         Override, called when successfully signed onto the server
         """
         self.evt_mgr.dispatch("onSignedOn", None)
-        self.join("#bot-test", "derp")
+        for channel in self.factory.initial_channels:
+            self.join(channel, self.factory.initial_channels[channel])
     
     def privmsg(self, user, channel, message):
         """ 

@@ -5,14 +5,17 @@ from twisted.python import log
 
 from janecore.ircbot.ansible.protocol import AnsibleClientProtocol
 from janecore.ircbot.ansible import commands
-
+import re
 import pickle
 
 class DittoRemote(AnsibleClientProtocol):
     EVENTS=["msg",] #"privMsg", "queryMsg"]
 
     def msgCallback(self, data):
-        self.callRemote(commands.DispatchEvent, event_name="doSay", data=pickle.dumps(data))
+        print data
+        if re.match("Jane.*ping?",data[-1]):
+            new_data = [data[0], data[1], "pong!!!!"]
+            self.callRemote(commands.DispatchEvent, event_name="doSay", data=pickle.dumps(new_data))
     
 class AnsibleClientFactory(ClientFactory):
     protocol = DittoRemote

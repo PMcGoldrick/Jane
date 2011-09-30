@@ -17,6 +17,8 @@ class JaneIRCClientFactory(protocol.ClientFactory):
     def __init__(self, realname=None, nickname=None, password=None, 
                  channels_dict={}):
         self.initial_channels = channels_dict
+        self.realname = realname
+        self.username = realname
         self.nickname = nickname
         self.password = password
         # Allow the callstack to unwind before firing up
