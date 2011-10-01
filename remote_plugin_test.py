@@ -9,14 +9,18 @@ import re
 import pickle
 
 class DittoRemote(AnsibleClientProtocol):
-    EVENTS=["msg",] #"privMsg", "queryMsg"]
+    EVENTS=["ircPrivmsg",] #"privMsg", "queryMsg"]
 
-    def msgCallback(self, data):
+    def ircPrivmsgCallback(self, data):
         print data
         if re.match("Jane.*ping?",data[-1]):
-            new_data = [data[0], data[1], "pong!!!!"]
-            self.callRemote(commands.DispatchEvent, event_name="doSay", data=pickle.dumps(new_data))
-    
+            new_data = [data[1], "pong!!!!"]
+            self.callRemote(commands.DispatchEvent, event_name="ircDoMsg", data=pickle.dumps(new_data))
+
+        if re.match(".load attention", data[-1]):
+            new_data = [data[1], ".unload attention"]
+            self.callRemote(commands.DispatchEvent, event_name="ircDoMsg", data=pickle.dumps(new_data))
+
 class AnsibleClientFactory(ClientFactory):
     protocol = DittoRemote
     

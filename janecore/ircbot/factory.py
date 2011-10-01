@@ -27,7 +27,7 @@ class JaneIRCClientFactory(protocol.ClientFactory):
     def startFactory(self):
         self.storage = common.Storage("core")
         self.storage.evt_mgr = EventManager(self)
-        self.storage.evt_mgr.addListener("connectionLost", 
+        self.storage.evt_mgr.addListener("ircConnectionLost", 
                 self.connectionLostCallback)
         self.storage.ircClientFactory = self
     

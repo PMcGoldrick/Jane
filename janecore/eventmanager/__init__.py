@@ -30,7 +30,12 @@ class EventManager(object):
         """ Dispatch the event by deferreds """
         l = []
         # TODO: catch attempts to dispatch unregistered events
-        event = self.event_types[event_name](data, maintain_original)
+        log.msg("\n### DISPATCHING ### \n %s \n %s" % (event_name, data))
+        try:
+            event = self.event_types[event_name](data, maintain_original)
+        except KeyError:
+            log.msg("Event is not registered: %s" % event_name)
+            return
         if event.value in self.event_registry.keys() \
         and len(self.event_registry[event.value]) > 0:
             for f in self.event_registry[event.value]:
