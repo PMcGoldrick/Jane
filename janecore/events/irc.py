@@ -5,10 +5,13 @@ or implemented:
 """
 from zope.interface import implements
 from twisted.plugin import IPlugin
-from ..eventmanager import IEventList
+from ..eventmanager.interface import IEventList, IRespondingEventList
 
 class IRCEventList(list):
     implements(IPlugin, IEventList)
+
+class IRCRespondingEventList(list):
+    implements(IPlugin, IRespondingEventList)
 
 events = {
 "ircYourHost":["info"],
@@ -55,8 +58,20 @@ events = {
 "ircDoQuit":["message"], 
 "ircDoDescribe":[("channel", "action")],
 "ircDoPing":[("user", "text")],
+
+# System Maintenance
 }
+
+# "eventName" : [[Args],[Returns]]
+responding_events = {
+#"ircLoadPlugin" : [["pluginName"], [bool]],
+#"ircUnloadPlugin" : [["pluginName"],[bool]],
+"ircLoadedPluginList" : [[None], [("pluginName",)]], 
+"ircPluginList" : [[None],("pluginName")],
+"ircJoinedChannelList" : [[None],[("channelNames")]],
+}
+
+irc_responding_events = IRCRespondingEventList(responding_events.keys())
 irc_events=IRCEventList(events.keys())
-# Events From Server
 
 

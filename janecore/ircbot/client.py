@@ -25,9 +25,15 @@ class JaneIRCClient(IRCClient):
              "ircDoMode", "ircDoSay", "ircDoMsg", "ircDoNotice", "ircDoAway",
              "ircDoBack", "ircDoWhois", "ircDoSetNick", "ircDoQuit", 
              "ircDoDescribe", "ircDoPing",]
+    
+    RESPEVENT=["ircJoinedChannelList"]
 
     ##########################################################################
     ## PROPERTIES
+
+    def ircJoinedChannelListResponder(self, d):
+        d.callback("DEEEERP")
+
     @property
     def nickname(self):
         """

@@ -4,7 +4,7 @@ from twisted.plugin import getPlugins
 
 from janecore.ircbot.client import JaneIRCClient
 from janecore.eventmanager import EventManager
-from janecore.eventmanager.interface import IEventListener
+from janecore.eventmanager.interface import IEventListener, IEventResponder
 from janecore import common, plugins
 
 class JaneIRCClientFactory(protocol.ClientFactory):
@@ -32,15 +32,28 @@ class JaneIRCClientFactory(protocol.ClientFactory):
         self.storage.ircClientFactory = self
     
     def buildProtocol(self, addr):
+        """ 
+        """
         p = self.protocol()
         p.factory = self
+
+        # For sanity purposes JaneIRCClient exists
+        # outside of the IPlugin system so init our
+        # events here 
         for event_name in self.protocol.EVENT:
             self.storage.evt_mgr.addListener(event_name, p)
-
+        for resp_event_name in self.protocol.RESPEVENT:
+            self.storage.evt_mgr.addResponder(resp_event_name, p)
+        
+        # Now bootstrap any local plugins that may be installed
         for handler in getPlugins(IEventListener, plugins):
             handler.load(self)
             for event_name in handler.EVENT:
                 self.storage.evt_mgr.addListener(event_name, handler)
+
+        for responder in getPlugins(IEventResponder, plugins):
+            for event_name in responder.RESPEVENT:
+                self.storage.evt_mgr.addResponder(event_name, responder)
         return p
 
     def clientConnectionLost(self, connector, reason):
