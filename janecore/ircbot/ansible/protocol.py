@@ -11,7 +11,6 @@ class AnsibleProtocol(amp.AMP):
     Protocol to allow a bot plugin client communicate
     with a Jane server.
     """
-    timeout=300
     def connectionMade(self):
         if self.factory.number_of_connections >= self.factory.max_connections:
             self.transport.write("Too many active plugins.")
@@ -22,12 +21,6 @@ class AnsibleProtocol(amp.AMP):
         self.factory.number_of_connections += 1
         self.identifier = self.factory.number_of_connections
 
-        # TODO: should try to let the other side know why they're being
-        # disconnected.
-        self.timeout_deferred = reactor.callLater(self.__class__.timeout,
-                self.transport.loseConnection)
-        amp.AMP.connectionMade(self)
-    
     def connectionLost(self, reason):
         """ Called when a connection is lost """
         log.msg("Connection Lost: %s" % reason)
